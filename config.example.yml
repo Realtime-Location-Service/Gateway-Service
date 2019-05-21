@@ -1,0 +1,8 @@
+app:
+    debug: false
+    http_port: 9002
+    read_timeout: 30 # timeout in second
+    write_timeout: 30 # timeout in second
+    idle_timeout: 30 # timeout in second
+    logger_type: kitlogger # kitlogger/logrus
+    name: "Gateway Service"
