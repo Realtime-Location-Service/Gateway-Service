@@ -14,12 +14,12 @@ import (
 	httputil "github.com/rls/gateway-service/utils/http"
 )
 
-// MakeHandler returns a handler for the pass service.
+// MakeHandler returns a handler for the  meta service.
 func MakeHandler(svc Service) http.Handler {
 	reqHandler := kithttp.NewServer(
 		makeMetaProxyEndpoint(svc),
-		decodeGetPassRequest,
-		encodePassResponse,
+		decodeRequest,
+		encodeResponse,
 	)
 
 	r := chi.NewRouter()
@@ -33,12 +33,12 @@ func MakeHandler(svc Service) http.Handler {
 	return r
 }
 
-func encodePassResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(*metaResponse)
 	return httpSvc.NewHTTP(0).SendResponse(w, res.HTTPResponse)
 }
 
-func decodeGetPassRequest(_ context.Context, r *http.Request) (i interface{}, e error) {
+func decodeRequest(_ context.Context, r *http.Request) (i interface{}, e error) {
 	var req metaRequest
 	req.Referrer = r.Header.Get(consts.RLSReferrer)
 	req.UserID = r.Header.Get(consts.UserID)

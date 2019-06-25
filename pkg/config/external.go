@@ -5,4 +5,5 @@ func LoadExternalCfg() {
 	LoadPingCfg()
 	LoadAuthCfg()
 	LoadMetaCfg()
+	LoadHistoryCfg()
 }

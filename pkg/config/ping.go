@@ -8,7 +8,7 @@ import (
 
 // Ping ...
 type Ping struct {
-	BaseURL            string
+	BaseURL        string
 	RequestTimeout time.Duration
 }
 
@@ -22,5 +22,5 @@ func PingCfg() *Ping {
 // LoadPingCfg loads ping configuration
 func LoadPingCfg() {
 	ping.BaseURL = viper.GetString("ping.base_url")
-	ping.RequestTimeout = viper.GetDuration("app.request_timeout") * time.Second
+	ping.RequestTimeout = viper.GetDuration("ping.request_timeout") * time.Second
 }

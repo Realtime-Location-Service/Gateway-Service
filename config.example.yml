@@ -16,7 +16,7 @@ auth:
     base_url: http://ec2-18-139-2-104.ap-southeast-1.compute.amazonaws.com:8001
     authorization: api/v1/user/resolve
     request_timeout: 5 # timeout in secs
-analysis:
-    url: 127.0.0.1:9001
-    request_timeout: 1 # timeout in secs
+history:
+    base_url: http://ec2-18-139-2-104.ap-southeast-1.compute.amazonaws.com:9010
+    request_timeout: 5 # timeout in secs
     

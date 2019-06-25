@@ -7,7 +7,7 @@ import (
 	"github.com/rls/gateway-service/utils/consts"
 )
 
-// Service is the interface that provides passes.
+// Service  ...
 type Service interface {
 	Request(context.Context, *metaRequest) (*metaResponse, error)
 }
@@ -26,7 +26,7 @@ func (svc *service) Request(ctx context.Context, r *metaRequest) (*metaResponse,
 	}, nil
 }
 
-// NewService creates pass service with necessary dependencies.
+// NewService ...
 func NewService(cHTTP chttp.IHttp) Service {
 	return &service{cHTTP}
 }

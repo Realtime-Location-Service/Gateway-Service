@@ -1,4 +1,4 @@
-package ping
+package history
 
 import (
 	"context"
@@ -9,24 +9,24 @@ import (
 
 // Service ...
 type Service interface {
-	Request(context.Context, *pingRequest) (*pingResponse, error)
+	Request(context.Context, *historyRequest) (*historyResponse, error)
 }
 
 type service struct {
 	cHTTP chttp.IHttp
 }
 
-func (svc *service) Request(ctx context.Context, r *pingRequest) (*pingResponse, error) {
+func (svc *service) Request(ctx context.Context, r *historyRequest) (*historyResponse, error) {
 	resp := svc.cHTTP.Do(r.Method, r.URL, r.Payload, map[string]string{
 		consts.RLSReferrer: r.Referrer,
 		consts.ContentType: consts.ContentTypeJSON,
 	})
-	return &pingResponse{
+	return &historyResponse{
 		resp,
 	}, nil
 }
 
-// NewService creates ping service with necessary dependencies.
+// NewService creates history service with necessary dependencies.
 func NewService(cHTTP chttp.IHttp) Service {
 	return &service{cHTTP}
 }
