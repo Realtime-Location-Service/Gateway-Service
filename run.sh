@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PROJECT="gateway_service"
+PROJECT="gateway-service"
 
 # waiting for consul
 until $(curl --output /dev/null --silent --fail http://127.0.0.1:8500/v1/kv); do

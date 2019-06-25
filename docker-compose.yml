@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  consul:
+    image: consul:latest
+    container_name: consul_dev
+    restart: always
+    ports:
+      - 8500:8500   
