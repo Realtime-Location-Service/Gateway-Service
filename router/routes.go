@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/rls/gateway-service/pkg/config"
+	"github.com/rls/gateway-service/pkg/meta"
 	"github.com/rls/gateway-service/pkg/ping"
 	"github.com/rls/gateway-service/utils/errors"
 
@@ -49,8 +50,16 @@ func registerRoutes() {
 	router.Route("/ping/v1", func(r chi.Router) {
 		r.Mount("/locations", pingHandler())
 	})
+
+	router.Route("/metadata/api/v1", func(r chi.Router) {
+		r.Mount("/users", metaHandler())
+	})
 }
 
 func pingHandler() http.Handler {
 	return ping.MakeHandler(ping.NewService(chttp.NewHTTP(config.PingCfg().RequestTimeout)))
+}
+
+func metaHandler() http.Handler {
+	return meta.MakeHandler(meta.NewService(chttp.NewHTTP(config.MetaCfg().RequestTimeout)))
 }

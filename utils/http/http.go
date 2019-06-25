@@ -19,10 +19,10 @@ func BuildQueryString(req *shttp.Request, queries map[string]string) {
 // then joins with base url
 // path => ping/v1/locations?q=whatever
 // returns http://baseurl.com/v1/locations?q=whatever
-func BuildURL(baseURL, path string) string {
-	s := strings.Split(path, "/v1")
+func BuildURL(baseURL, path, prefix string) string {
+	s := strings.Split(path, prefix)
 	if len(s) > 1 {
-		s[0] = "v1"
+		s[0] = prefix
 	}
 	return baseURL + filepath.Join("/", strings.Join(s, "/"))
 }

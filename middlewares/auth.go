@@ -29,8 +29,7 @@ func ResolveUser(next http.Handler) http.Handler {
 			return
 		}
 		authCfg := config.AuthCfg()
-		// url := chttp.BuildURL(cfg.URL, r.URL.String())
-		resp := httpSvc.NewHTTP(authCfg.RequestTimeout).Get(authCfg.AuthURL+"?appKey="+appKey, map[string]string{
+		resp := httpSvc.NewHTTP(authCfg.RequestTimeout).Get(authCfg.AuthURL, map[string]string{
 			consts.AppKey: appKey,
 		})
 
