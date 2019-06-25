@@ -6,3 +6,17 @@ app:
     idle_timeout: 30 # timeout in second
     logger_type: kitlogger # kitlogger/logrus
     name: "Gateway Service"
+ping:
+    base_url: http://127.0.0.1:9001
+    request_timeout: 5 # timeout in secs
+meta:
+    base_url: http://ec2-18-139-2-104.ap-southeast-1.compute.amazonaws.com:8001
+    request_timeout: 5 # timeout in secs
+auth:
+    base_url: http://ec2-18-139-2-104.ap-southeast-1.compute.amazonaws.com:8001
+    authorization: api/v1/user/resolve
+    request_timeout: 5 # timeout in secs
+analysis:
+    url: 127.0.0.1:9001
+    request_timeout: 1 # timeout in secs
+    

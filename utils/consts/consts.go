@@ -14,3 +14,17 @@ const (
 var SupportedLogger = map[LoggerType]bool{
 	KitLogger: true,
 }
+
+// content types
+const (
+	ContentTypeJSON = "application/json; utf8"
+	ContentType     = "Content-Type"
+)
+
+// Request headers
+const (
+	RLSReferrer    = "RLS-Referrer"
+	AppKey         = "appKey"
+	UserID         = "userId"
+	SubordinateIDs = "subordinateIds"
+)

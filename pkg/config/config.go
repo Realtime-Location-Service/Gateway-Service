@@ -33,4 +33,5 @@ func Init() {
 	}
 
 	LoadAppCfg()
+	LoadExternalCfg()
 }
