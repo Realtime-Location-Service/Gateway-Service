@@ -26,7 +26,6 @@ type errResponse struct {
 func Route() http.Handler {
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
-	router.Use(middlewares.ResolveUser)
 
 	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; utf8")
@@ -48,15 +47,25 @@ func Route() http.Handler {
 }
 
 func registerRoutes() {
+
+	router.Route("/health", func(r chi.Router) {
+		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+		})
+	})
+
 	router.Route("/ping/v1", func(r chi.Router) {
+		r.Use(middlewares.ResolveUser)
 		r.Mount("/locations", pingHandler())
 	})
 
 	router.Route("/metadata/api/v1", func(r chi.Router) {
+		r.Use(middlewares.ResolveUser)
 		r.Mount("/users", metaHandler())
 	})
 
 	router.Route("/history/api/v1", func(r chi.Router) {
+		r.Use(middlewares.ResolveUser)
 		r.Mount("/history", historyHandler())
 	})
 }
