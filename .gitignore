@@ -1,8 +1,1 @@
 .idea/
-.DS_Store
-.vscode
-main
-gateway_service
-/bin
-/vendor
-gateway-service
