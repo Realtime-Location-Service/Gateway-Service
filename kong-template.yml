@@ -47,6 +47,19 @@ services:
       methods: [
         "GET"
       ]
+  - name: auth
+    url: ${AUTH_SERVICE_URL}
+    read_timeout: ${AUTH_RESPONSE_TIMEOUT}
+    routes:
+    - name: auth
+      strip_path: true
+      paths: [
+        "/auth"
+      ]
+      methods: [
+        "POST",
+        "GET"
+      ]
 plugins:
   - name: rls-auth
     service: ping
@@ -65,6 +78,13 @@ plugins:
   - name: rls-auth
     service: history
     route: history
+    config:
+      request:
+        authURL: ${AUTH_URL}
+        authTimeout: ${AUTH_TIMEOUT}
+  - name: rls-auth
+    service: auth
+    route: auth
     config:
       request:
         authURL: ${AUTH_URL}
