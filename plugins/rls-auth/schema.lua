@@ -1,12 +1,6 @@
 local typedefs = require "kong.db.schema.typedefs"
 local constants = require "kong.plugins.rls-auth.constants"
 
-local colon_string_array = {
-  type = "array",
-  default = {},
-  elements = { type = "string", match = "^[^:]+:.*$" },
-}
-
 local required_string = {
   type = "string",
   required = true,
@@ -32,9 +26,6 @@ return {
             request = {
               type = "record",
               fields = {
-                {
-                  headers = colon_string_array,
-                },
                 {
                   authURL = required_string,
                 },

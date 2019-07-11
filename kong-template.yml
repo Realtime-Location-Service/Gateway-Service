@@ -21,13 +21,33 @@ services:
       methods: [
         "GET"
       ]
+  - name: meta
+    url: ${META_URL}
+    read_timeout: ${META_RESPONSE_TIMEOUT}
+    routes:
+    - name: meta
+      strip_path: true
+      paths: [
+          "/metadata"
+      ]
+      methods: [
+        "POST",
+        "GET",
+        "PATCH",
+      ]
 plugins:
   - name: rls-auth
     service: ping
     route: ping
     config:
       request:
-        headers: ["Content-Type:application/json"]
+        authURL: ${AUTH_URL}
+        authTimeout: ${AUTH_TIMEOUT}
+  - name: rls-auth
+    service: meta
+    route: meta
+    config:
+      request:
         authURL: ${AUTH_URL}
         authTimeout: ${AUTH_TIMEOUT}
   - name: rate-limiting
