@@ -29,7 +29,7 @@ function AuthHandler:access(conf)
                                   resolveDomain, conf, headers, http.Request)
   if err then
     cache.Forget(app_key)
-    return kong.response.exit(httpStatus.SERVER_ERROR, { message = "Error happend while resloving domain!"})
+    return kong.response.exit(httpStatus.SERVER_ERROR, { message = "Error happend while resolving domain!"})
   end
 
   if credential.status_code ~= tostring(httpStatus.OK) or not credential.domain then
