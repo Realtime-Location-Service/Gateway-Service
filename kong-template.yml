@@ -33,7 +33,19 @@ services:
       methods: [
         "POST",
         "GET",
-        "PATCH",
+        "PATCH"
+      ]
+  - name: history
+    url: ${HISTORY_URL}
+    read_timeout: ${HISTORY_RESPONSE_TIMEOUT}
+    routes:
+    - name: history
+      strip_path: true
+      paths: [
+        "/history"
+      ]
+      methods: [
+        "GET"
       ]
 plugins:
   - name: rls-auth
@@ -46,6 +58,13 @@ plugins:
   - name: rls-auth
     service: meta
     route: meta
+    config:
+      request:
+        authURL: ${AUTH_URL}
+        authTimeout: ${AUTH_TIMEOUT}
+  - name: rls-auth
+    service: history
+    route: history
     config:
       request:
         authURL: ${AUTH_URL}
