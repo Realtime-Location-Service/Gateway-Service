@@ -31,6 +31,9 @@ return {
                 },
                 {
                   authTimeout = required_int,
+                },
+                {
+                  cacheTTL = required_int,
                 }
               }
             }

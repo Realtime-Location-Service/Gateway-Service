@@ -68,6 +68,7 @@ plugins:
       request:
         authURL: ${AUTH_URL}
         authTimeout: ${AUTH_TIMEOUT}
+        cacheTTL: ${AUTH_CACHE_TTL}
   - name: rls-auth
     service: meta
     route: meta
@@ -75,6 +76,7 @@ plugins:
       request:
         authURL: ${AUTH_URL}
         authTimeout: ${AUTH_TIMEOUT}
+        cacheTTL: ${AUTH_CACHE_TTL}
   - name: rls-auth
     service: history
     route: history
@@ -82,6 +84,7 @@ plugins:
       request:
         authURL: ${AUTH_URL}
         authTimeout: ${AUTH_TIMEOUT}
+        cacheTTL: ${AUTH_CACHE_TTL}
   - name: rls-auth
     service: auth
     route: auth
@@ -89,6 +92,7 @@ plugins:
       request:
         authURL: ${AUTH_URL}
         authTimeout: ${AUTH_TIMEOUT}
+        cacheTTL: ${AUTH_CACHE_TTL}
   - name: rate-limiting
     route: ping
     config:
