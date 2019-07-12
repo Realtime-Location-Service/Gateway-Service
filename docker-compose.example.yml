@@ -15,18 +15,18 @@ services:
       - KONG_NGINX_PROXY_GZIP=on
       - KONG_NGINX_PROXY_GZIP_TYPES="text/plain application/json"
       - KONG_DECLARATIVE_CONFIG=/usr/local/share/kong.yml
-      - PING_URL=http://ec2-18-139-2-104.ap-southeast-1.compute.amazonaws.com:9001 # REPLACE THIS
+      - PING_URL= # REPLACE THIS
       - PING_RESPONSE_TIMEOUT=3000 #timeout in ms
       - PING_RATE_LIMIT_PER_SEC=10
       - PING_RATE_LIMIT_PER_MIN=100
       - PING_RATE_LIMIT_POLICY=local #local/redis/cluster
-      - AUTH_URL=http://ec2-18-139-2-104.ap-southeast-1.compute.amazonaws.com:8001/api/v1/user/resolve # REPLACE THIS
+      - AUTH_URL= # REPLACE THIS
       - AUTH_TIMEOUT=1 #timeout in sec
-      - META_URL=http://ec2-18-139-2-104.ap-southeast-1.compute.amazonaws.com:7001 # REPLACE THIS
+      - META_URL= # REPLACE THIS
       - META_RESPONSE_TIMEOUT=3000 #timeout in ms
-      - HISTORY_URL=http://ec2-18-139-2-104.ap-southeast-1.compute.amazonaws.com:9010 # REPLACE THIS
+      - HISTORY_URL= # REPLACE THIS
       - HISTORY_RESPONSE_TIMEOUT=3000 #timeout in ms
-      - AUTH_SERVICE_URL=http://ec2-18-139-2-104.ap-southeast-1.compute.amazonaws.com:8001 # REPLACE THIS
+      - AUTH_SERVICE_URL= # REPLACE THIS
       - AUTH_RESPONSE_TIMEOUT=3000 #timeout in ms
       - AUTH_CACHE_TTL=3 # ttl in sec
     ports:
