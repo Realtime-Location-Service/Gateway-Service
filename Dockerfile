@@ -1,33 +1,33 @@
-FROM golang:1.12-alpine AS builder
-# Force the go compiler to use modules
-ENV GO111MODULE=on 
-# update git
-RUN apk add --no-cache --update git
-ARG project=gateway-service
-# set work directory of container
-WORKDIR $GOPATH/src/$project/
-# We want to populate the module cache based on the go.{mod,sum} files.
-COPY go.mod .
-COPY go.sum .
-# Download all the dependencies that are specified in 
-# the go.mod and go.sum file.
-RUN go mod download
-# copy project to container
-COPY . .
+FROM alpine:3.6
 
-RUN rm -rf /go/pkg/mod/github.com/coreos/etcd@v3.3.10+incompatible/client/keys.generated.go
-# build project
-RUN CGO_ENABLED=0 GOARCH="amd64" GOOS="linux" \
-	go build -o /bin/$project .
+ENV KONG_VERSION 1.2.0
+ENV KONG_SHA256 049c63c930b14d8049ebd028794b690b52600c580be8fe129dac11062b8e2568
 
+RUN adduser -Su 1337 kong \
+	&& mkdir -p "/usr/local/kong" \
+	&& apk add --no-cache --virtual .build-deps wget tar ca-certificates \
+	&& apk add --no-cache libgcc openssl pcre perl tzdata curl git libcap su-exec \
+	&& wget -O kong.tar.gz "https://bintray.com/kong/kong-alpine-tar/download_file?file_path=kong-$KONG_VERSION.apk.tar.gz" \
+	&& echo "$KONG_SHA256 *kong.tar.gz" | sha256sum -c - \
+	&& tar -xzf kong.tar.gz -C /tmp \
+	&& rm -f kong.tar.gz \
+	&& cp -R /tmp/usr / \
+	&& rm -rf /tmp/usr \
+	&& cp -R /tmp/etc / \
+	&& rm -rf /tmp/etc \
+	&& apk del .build-deps \
+	&& chown -R kong:0 /usr/local/kong \
+	&& chmod -R g=u /usr/local/kong
 
-FROM alpine:latest
-# copy binary from previous build to new container
-COPY --from=builder /bin/$project /bin/$project
-# set environment for consul
-# public consul url should be here
-ENV GATEWAY_SERVICE_CONSUL_URL="127.0.0.1:8500"
-ENV GATEWAY_SERVICE_CONSUL_PATH=$project
+RUN luarocks install lua-resty-template
+RUN luarocks install http
 
-EXPOSE 9002
-ENTRYPOINT ["/bin/gateway-service", "serve"]
+COPY plugins /usr/local/share/lua/5.1/kong/plugins
+COPY kong-template.yml /usr/local/share/kong-template.yml
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+STOPSIGNAL SIGQUIT
+
+CMD ["kong", "start"]

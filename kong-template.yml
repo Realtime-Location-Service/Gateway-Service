@@ -1,0 +1,106 @@
+_format_version: "1.1"
+services:
+  - name: ping
+    url: ${PING_URL}
+    read_timeout: ${PING_RESPONSE_TIMEOUT}
+    routes:
+    - name: ping
+      strip_path: true
+      paths: [
+        "/ping"
+      ]
+      methods: [
+        "POST",
+        "GET"
+      ]
+    - name: health
+      strip_path: false
+      paths: [
+        "/health"
+      ]
+      methods: [
+        "GET"
+      ]
+  - name: meta
+    url: ${META_URL}
+    read_timeout: ${META_RESPONSE_TIMEOUT}
+    routes:
+    - name: meta
+      strip_path: true
+      paths: [
+          "/metadata"
+      ]
+      methods: [
+        "POST",
+        "GET",
+        "PATCH"
+      ]
+  - name: history
+    url: ${HISTORY_URL}
+    read_timeout: ${HISTORY_RESPONSE_TIMEOUT}
+    routes:
+    - name: history
+      strip_path: true
+      paths: [
+        "/history"
+      ]
+      methods: [
+        "GET"
+      ]
+  - name: auth
+    url: ${AUTH_SERVICE_URL}
+    read_timeout: ${AUTH_RESPONSE_TIMEOUT}
+    routes:
+    - name: auth
+      strip_path: true
+      paths: [
+        "/auth"
+      ]
+      methods: [
+        "POST",
+        "GET"
+      ]
+plugins:
+  - name: rls-auth
+    service: ping
+    route: ping
+    config:
+      request:
+        authURL: ${AUTH_URL}
+        authTimeout: ${AUTH_TIMEOUT}
+        cacheTTL: ${AUTH_CACHE_TTL}
+  - name: rls-auth
+    service: meta
+    route: meta
+    config:
+      request:
+        authURL: ${AUTH_URL}
+        authTimeout: ${AUTH_TIMEOUT}
+        cacheTTL: ${AUTH_CACHE_TTL}
+  - name: rls-auth
+    service: history
+    route: history
+    config:
+      request:
+        authURL: ${AUTH_URL}
+        authTimeout: ${AUTH_TIMEOUT}
+        cacheTTL: ${AUTH_CACHE_TTL}
+  - name: rls-auth
+    service: auth
+    route: auth
+    config:
+      request:
+        authURL: ${AUTH_URL}
+        authTimeout: ${AUTH_TIMEOUT}
+        cacheTTL: ${AUTH_CACHE_TTL}
+  - name: rate-limiting
+    route: ping
+    config:
+      second: ${PING_RATE_LIMIT_PER_SEC}
+      minute: ${PING_RATE_LIMIT_PER_MIN}
+      policy: ${PING_RATE_LIMIT_POLICY}
+  - name: request-termination
+    route: health
+    config:
+      status_code: 200
+      message: Ok!
