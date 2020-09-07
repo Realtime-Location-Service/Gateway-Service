@@ -14,7 +14,6 @@ function AuthHandler:new()
   AuthHandler.super.new(self, constants.PLUGIN_NAME)
 end
 
-
 function AuthHandler:access(conf)
   AuthHandler.super.access(self)
   local app_key = kong.request.get_header(constants.AUTH_HEADER)
@@ -24,7 +23,6 @@ function AuthHandler:access(conf)
   end
 
   local headers = {[constants.AUTH_HEADER]=app_key,[":method"]="GET"}
-
   local credential, err = cache.Get(app_key, {ttl = conf.request.cacheTTL},
                                   resolveDomain, conf, headers, http.Request)
   if err then
@@ -32,7 +30,7 @@ function AuthHandler:access(conf)
     return kong.response.exit(httpStatus.SERVER_ERROR, { message = "Error happend while resolving domain!"})
   end
 
-  if credential.status_code ~= tostring(httpStatus.OK) or not credential.domain then
+  if credential.status_code ~= httpStatus.OK or not credential.domain then
     return kong.response.exit(httpStatus.UNAUTHORIZED, { message = "You are not Authorized!"})
   end
 

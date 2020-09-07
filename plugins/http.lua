@@ -1,29 +1,29 @@
-local http_request = require "http.request"
-local http_headers = require "http.headers"
+local http = require("socket.http")
 local httpStatus = require "kong.plugins.http_status"
 local cjson = require "cjson"
-
+local ltn12 = require "ltn12"
 
 function Request(url, headers, timeout)
-  local body = "{}"
+  local res = {}
 
   if not url or url == "" then
-    return httpStatus.BADREQUEST, cjson.decode(body)
+    return httpStatus.BADREQUEST, {}
   end
 
-  local req = http_request.new_from_uri(url)
-  for k, v in pairs(headers) do
-    req.headers:upsert(k, v, false)
-  end
+  local one, code = http.request{
+    url = url,
+    headers = headers,
+    sink = ltn12.sink.table(res),
+    create=function()
+      local req_sock = socket.tcp()
+      req_sock:settimeout(timeout, 't')
+      return req_sock
+    end
+  }
 
-  local headers, stream = req:go(timeout)
-  body = stream:get_body_as_string(timeout)
-  stream:shutdown()
+  res = table.concat(res)
 
-  if not body or not string.find(headers:get("content-type"), "application/json") then
-    body = "{}"
-  end
-  return headers:get ":status", cjson.decode(body)
+  return code, cjson.decode(res)
 end
 
 

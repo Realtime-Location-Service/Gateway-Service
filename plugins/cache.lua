@@ -14,7 +14,7 @@ end
 local function Forget(key)
   key = CACHE_PREFIX .. key
   
-  ttl, err, value = kong.cache:probe(key)
+  local ttl, err, value = kong.cache:probe(key)
   if ttl then
     kong.cache:invalidate(key)
   end
